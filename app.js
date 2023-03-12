@@ -7,17 +7,20 @@ const mongoose = require('mongoose');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+//import custom todoRouter
+const todoRouter = require('./routes/todo');
 
 //disable queries with properties that are not in the schema
 mongoose.set('strictQuery', false);
 
 //define database url
-const mongoDB = 'mongodb://localhost:27017/todoApp';
+const mongoDB = 'mongodb://0.0.0.0:27017/todoApp';
 
 //wait for db to connect, logging error if occurs
 main().catch(err => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);
+  console.log("DB CONNECTION NICE!");
 }
 
 const app = express();
@@ -34,6 +37,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+//redirect all /todo requests to todoRouter
+app.use('/todo', todoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

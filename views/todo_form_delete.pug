@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h1 #{title}
+    h1= todo.title
+    p= todo.description
+
+    p Do you really want to delete this ToDo?
+
+        form(method='POST' action='')
+            div.form-group
+                input#id.form-control(type='hidden', name='id', required='true', value=todo._id )
+
+            button.btn.btn-primary(type='submit') Delete

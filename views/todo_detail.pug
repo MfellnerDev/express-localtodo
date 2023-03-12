@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    h1= page_title
+    link(rel='stylesheet', href='/stylesheets/todo-entry-box-formatting.css')
+
+    div.todo-box
+        a(href=todo_object.url) #{todo_object.title}
+        p
+            hr
+            | Due date: #{todo_object.dueDate_formatted}
+            br
+            | Priority: #{todo_object.priority}
+            br
+            | Subject: #{todo_object.subject}
+            br
+            | Is done? #{todo_object.isDone}
+            br
+            | Todo secret key: *******
+
+            hr
+            p
+                a(href=todo_object.url+'/delete') Delete ToDo
+
+            p
+                a(href=todo_object.url + '/update') Update ToDo
+    div.todo-box

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    h1= page_title
+    link(rel='stylesheet', href='/stylesheets/todo-entry-box-formatting.css')
+
+    ul
+        each todo in todo_list
+            div.todo-box
+                a(href=todo.url) #{todo.title}
+                p
+                    hr
+                    | Due date: #{todo.dueDate_formatted}
+                    br
+                    | Priority: #{todo.priority}
+                    br
+                    | Subject: #{todo.subject}
+                    br
+                    | Is done? #{todo.isDone}
+            div.todo-box
+        else
+            p There are no books

@@ -1,0 +1,35 @@
+extends layout
+
+block content
+    h1=title
+
+    form(method='POST' action='')
+        div.form-group
+            label(for='title') Title:
+            input#title.form-control(type='text' placeholder='title' name='title' required='true' value=(undefined===todo ? '' : todo.title) )
+
+            label(for='description') Description:
+            input#description.form-control(type='text' placeholder='description' name='description' required='true' value=(undefined===todo ? '' : todo.description))
+        div.form-group
+            label(for='dueDate') Due Date:
+            input#dueDate.form-control(type='date' name='dueDate' value=(undefined===todo ? '' : todo.dueDate) )
+
+            label(for='priority') Priority (0 - 10):
+            input#priority.form-control(type='number' placeholder='priority' name='priority' required='true' value=(undefined === todo ? '' : todo.priority))
+
+            label(for='subject') Subject:
+            input#subject.form-control(type='text' placeholder='subject' name='subject' required='true' value=(undefined === todo ? '' : todo.subject))
+
+            label(for='secretTodoKey') Secret Todo key (required for updating/deleting the entry):
+            input#secretTodoKey.form-control(type='password' placeholder='secretTodoKey' name='secretTodoKey' required='true' value=(undefined === todo ? '' : todo.secretTodoKey))
+
+
+        label(for='isDone') Is done? (only if task is already done, else -> false):
+        input#isDone.form-control(type='checkbox' name='isDone' value=(undefined === todo ? '' : todo.isDone))
+
+
+        button.btn.btn-primary(type='submit') Submit
+    if errors
+        ul
+            for error in errors
+                li!= error.msg
