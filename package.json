@@ -1,5 +1,6 @@
 {
   "name": "express-localtodo",
+  "description": "A local ToDo App - For your productivity",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -9,10 +10,12 @@
   },
   "dependencies": {
     "async": "^3.2.4",
+    "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "^4.18.2",
     "express-validator": "^6.15.0",
+    "helmet": "^6.0.1",
     "http-errors": "~1.6.3",
     "luxon": "^3.3.0",
     "mongoose": "^6.9.0",

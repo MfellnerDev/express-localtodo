@@ -1,7 +1,17 @@
+
+/// CONTROLLER OF TODO_ROUTE ///
+
 const Todo = require('../models/toDo');
 const async = require("async");
 const {body, validationResult} = require("express-validator");
+const debug = require("debug")("todo");
 
+
+/**
+ * The index page - Shows a count of entries, open entries and closed entries
+ * @param req request
+ * @param res response
+ */
 exports.index = (req, res) => {
     async.parallel(
         {
@@ -28,14 +38,19 @@ exports.index = (req, res) => {
 };
 
 
-//Display all ToDos
+/**
+ * Display ALL todo_entries
+ * @param req request
+ * @param res response
+ * @param next next (middleware)
+ */
 exports.todo_list = (req, res, next) => {
-    //find {} = get everything, show todos with latest date first and exec query
+    //find {} = get everything, show todos with the latest date first and exec query
     Todo.find({})
         .sort({dueDate: -1})
         .exec(function (err, todo_list) {
             if (err) {
-                //there is an error
+                debug(`Error when fetching all todo entries: ${err}`);
                 return next(err);
             }
             //render the result
@@ -43,11 +58,16 @@ exports.todo_list = (req, res, next) => {
         });
 };
 
-//display detail page for specific ToDos-entry
+/**
+ * Display detail page for a specific Todo_entry
+ * @param req request
+ * @param res response
+ * @param next next (middleware)
+ */
 exports.todo_detail = (req, res, next) => {
     async.parallel(
         {
-            //find detailed todos entry
+            //find detailed todo_ entry
             todo(callback) {
                 //find by id, execute query
                 Todo.findById(req.params.id).exec(callback);
@@ -55,16 +75,16 @@ exports.todo_detail = (req, res, next) => {
         },
         (err, results) => {
             if (err) {
-                //there is an error
+                debug(`Error when fetching todo detail of id=${req.params.id}: ${err}`);
                 return next(err);
             }
             if (results.todo == null) {
                 //no results -> not found
                 const err = new Error("ToDo entry not found!");
                 err.status = 404;
-                return next(err);
+                    return next(err);
             }
-            //todos found
+            //todo_ found
             res.render("todo_detail", {
                 page_title: results.todo.title,
                 todo_object: results.todo,
@@ -73,16 +93,21 @@ exports.todo_detail = (req, res, next) => {
     )
 };
 
-//display todos create form on GET
-exports.todo_create_get = (req, res, next) => {
-    //deliver form for creating todos
+/**
+ * Display form to create todo_object on GET
+ * @param req request
+ * @param res response
+ */
+exports.todo_create_get = (req, res) => {
     res.render("todo_form", {title: "Create a new todo"});
 };
 
-// Handle todos create on post
+/**
+ * Handle todo_create operation on POST
+ * Just everything packed up and exported
+ */
 exports.todo_create_post = [
-    // Validate and sanitize fields.
-    //-> trims strings, sets minLength = 1, escapes the string and with message
+    // Validate and sanitize fields, .escape() removes potentially dangerous characters
     body("title")
         .trim()
         .isLength({min: 1})
@@ -93,11 +118,6 @@ exports.todo_create_post = [
         .isLength({min: 1})
         .escape()
         .withMessage("description name must be specified."),
-    body("secretTodoKey")
-        .trim()
-        .isLength({min: 1})
-        .escape()
-        .withMessage("Secret to do key must be specified."),
     //checks if date is valid -> ISO8601 format, converts it to date
     body("isDue", "Invalid isDue date")
         .optional({checkFalsy: true})
@@ -132,7 +152,7 @@ exports.todo_create_post = [
 
         // Data is valid
 
-        // Create a todos object with escaped and trimmed data
+        // Create a todo_ object with escaped and trimmed data
         const todo = new Todo({
             title: req.body.title,
             description: req.body.description,
@@ -140,36 +160,43 @@ exports.todo_create_post = [
             priority: req.body.priority,
             subject: req.body.subject,
             isDone: req.body.isDone,
-            secretTodoKey: req.body.secretTodoKey,
         });
         //save the new object into the db
         todo.save((err) => {
             if (err) {
+                debug(`Error when fetching todo detail of id=${req.params.id}: ${err}`);
+
                 return next(err);
             }
-            // Successful - redirect to new todos.
+            // Successful - redirect to new todo_
             res.redirect(todo.url);
         });
     },
 ];
 
-//display todos delete form on GET
+/**
+ * Displays todo_delete form on GET
+ * @param req request
+ * @param res response
+ * @param next next (middleware)
+ */
 exports.todo_delete_get = (req, res, next) => {
     async.parallel(
         {
-            //find todos by id
+            //find todo_ by id
             todo(callback) {
                 Todo.findById(req.params.id).exec(callback);
             }
         },
         (err, results) => {
             if (err) {
-                //there is an error
-                return next(err);
+                debug(`Error when trying to GET delete, object with id=${req.params.id} doesn't exist: ${err}`);
+                res.redirect('http://localhost:3000/html/404.html');
+                return;
             }
             if (results.todo == null) {
-                //no results -> 404, redirect to all entries
-                res.redirect("/todo/entries");
+                //no results -> redirect to entries
+                res.redirect('/todo/entries');
             }
 
             //successful, render form
@@ -181,28 +208,32 @@ exports.todo_delete_get = (req, res, next) => {
     )
 };
 
-// handle todos delete on POST
+/**
+ * Handle todo_delete operation on POST
+ * @param req request
+ * @param res response
+ * @param next next (middleware)
+ */
 exports.todo_delete_post = (req, res, next) => {
     async.parallel(
         {
-            //find todos by id
+            //find todo_ by id
             todo(callback) {
                 Todo.findById(req.params.id).exec(callback);
             },
         },
-        async (err, results) => {
+         (err, results) => {
             if (err) {
-                //there is an error
+                debug(`Error when trying to delete todo with id=${req.params.id}: ${err}`);
                 return next(err);
             }
-
-            //TODO: implement secret key input when deleting
 
             //find and delete object with id
             Todo.findByIdAndDelete(req.body.id, (err) => {
                 if (err) {
-                    //error while trying to find and delete it
-                    return next(err);
+                    debug(`Delete error, cannot find object with id=${req.params.id}: ${err}`);
+                    res.redirect('http://localhost:3000/html/404.html');
+                    return;
                 }
                 //success - go to all entries
                 res.redirect("/todo/entries");
@@ -211,21 +242,27 @@ exports.todo_delete_post = (req, res, next) => {
     );
 };
 
-//display todos update form on GET
+/**
+ * Display todo_update form on GET
+ * @param req request
+ * @param res response
+ * @param next next (middleware)
+ */
 exports.todo_update_get = (req, res, next) => {
     async.parallel(
         {
-            //find todos by id
+            //find todo_ by id
             todo(callback) {
                 Todo.findById(req.params.id).exec(callback);
             }
         },
         (err, results) => {
             if (err) {
-                //there is an error
-                return next(err);
+                debug(`Update GET error, object wit hid=${req.params.id} doesn't exist: ${err}`);
+                res.redirect('http://localhost:3000/html/404.html');
+                return;
             }
-            if (results.todo == null)   {
+            if (results.todo == null) {
                 //no results -> 404
                 const err = new Error("ToDo not found!");
                 err.status = 404;
@@ -239,11 +276,14 @@ exports.todo_update_get = (req, res, next) => {
             })
         }
     )
-}
+ }
 
-//handle todos update on POST
+/**
+ * Handle todo_update operation on POST
+ * Just everything packed together and exported
+ */
 exports.todo_update_post = [
-    // Validate and sanitize fields
+    // Validate and sanitize fields, .escape() removes potentially dangerous characters
     body("title")
         .trim()
         .isLength({min: 1})
@@ -254,11 +294,6 @@ exports.todo_update_post = [
         .isLength({min: 1})
         .escape()
         .withMessage("description name must be specified."),
-    body("secretTodoKey")
-        .trim()
-        .isLength({min: 1})
-        .escape()
-        .withMessage("Secret to do key must be specified."),
     body("isDue", "Invalid isDue date")
         .optional({checkFalsy: true})
         .isISO8601()
@@ -276,17 +311,13 @@ exports.todo_update_post = [
         .escape(),
 
     // Now, process request after validation and sanitization.
-    async (req, res, next) => {
+
+     (req, res, next) => {
         // Extract validation errors from a request
         const errors = validationResult(req);
 
-        const todoInDB = await Todo.findById(req.params.id);
 
-        if (todoInDB.secretTodoKey !== req.body.secretTodoKey) {
-            res.status(403).send({message: "The secret key is wrong!"});
-        }
-
-        // Create a todos object with escaped and trimmed data
+        // Create a todo_ object with escaped and trimmed data
         const todo = new Todo({
             title: req.body.title,
             description: req.body.description,
@@ -294,7 +325,6 @@ exports.todo_update_post = [
             priority: req.body.priority,
             subject: req.body.subject,
             isDone: req.body.isDone,
-            secretTodoKey: req.body.secretTodoKey,
             _id: req.params.id, //this field is REQUIRED! If it is deleted, an error will be thrown
             //because it will be tried to change the immutable field _id
         });
@@ -311,11 +341,12 @@ exports.todo_update_post = [
         // data from form is valid, update the object in db
         Todo.findByIdAndUpdate(req.params.id, todo, {}, (err, todo) => {
             if (err) {
-                //there is an error while trying to find and update the object
-                return next(err);
+                debug(`Update POST error, cannot find object with id=${req.params.id}: ${err}`);
+                res.redirect('http://localhost:3000/html/404.html');
+                return;
             }
 
-            // Successful! Redirect to new updated todos page
+            // Successful! Redirect to new updated todo_ page
             res.redirect(todo.url);
         });
     },

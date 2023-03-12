@@ -32,10 +32,6 @@ const ToDoSchema = new Schema({
         type: Boolean,
         required: [true, "IsDone is required!"],
         default: false,
-    },
-    secretTodoKey: {
-        type: String,
-        required: [true, "The secret key for your todo is required!"],
     }
 });
 
