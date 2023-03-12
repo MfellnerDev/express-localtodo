@@ -17,7 +17,7 @@
     "luxon": "^3.3.0",
     "mongoose": "^6.9.0",
     "morgan": "~1.9.1",
-    "pug": "^2.0.4"
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.21"
