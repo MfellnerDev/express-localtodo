@@ -20,10 +20,6 @@ block content
             label(for='subject') Subject:
             input#subject.form-control(type='text' placeholder='subject' name='subject' required='true' value=(undefined === todo ? '' : todo.subject))
 
-            label(for='secretTodoKey') Secret Todo key (required for updating/deleting the entry):
-            input#secretTodoKey.form-control(type='password' placeholder='secretTodoKey' name='secretTodoKey' required='true' value=(undefined === todo ? '' : todo.secretTodoKey))
-
-
         label(for='isDone') Is done? (only if task is already done, else -> false):
         input#isDone.form-control(type='checkbox' name='isDone' value=(undefined === todo ? '' : todo.isDone))
 

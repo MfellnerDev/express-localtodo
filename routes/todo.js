@@ -4,31 +4,31 @@ const router = express.Router();
 // require controller module
 const todo_controller = require("../controllers/toDoController");
 
-/// TODOs ROUTES ///
+/// TODO_ ROUTES ///
 
 // GET home page
 router.get('/', todo_controller.index);
 
-// GET request for creating a todos
+// GET request for creating a todo_
 router.get('/entries/create', todo_controller.todo_create_get);
 
-// POST request for creating a todos
+// POST request for creating a todo_
 router.post('/entries/create', todo_controller.todo_create_post);
 
-// GET request for deleting todos
+// GET request for deleting todo_
 router.get('/entries/:id/delete', todo_controller.todo_delete_get);
 
-// POST request for deleting todos
+// POST request for deleting todo_
 router.post('/entries/:id/delete', todo_controller.todo_delete_post);
 
-// GET request to update todos
+// GET request to update todo_
 router.get('/entries/:id/update', todo_controller.todo_update_get);
 
 
-// POST request to update todos
+// POST request to update todo_
 router.post('/entries/:id/update', todo_controller.todo_update_post);
 
-// GET request for one todos
+// GET request for one todo_
 router.get('/entries/:id', todo_controller.todo_detail);
 
 //GET request for a list of all todos
