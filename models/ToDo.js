@@ -1,3 +1,11 @@
+/**
+ * Mongoose ToDo_ schema - "Object class" (for java lovers)
+ * Contains everything important to the schema itself.
+ *
+ * @author MfellnerDev
+ * @version 13.03.2023
+ */
+
 const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
 

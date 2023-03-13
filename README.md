@@ -3,7 +3,9 @@ A local ToDo app. Built with ExpressJS and pug.
 
 **TODOS:**
 
-- [ ] Implement DB and application testing ; priority*: **0**
+*Structure: [TODO] ; [PRIORITY] ; [CURRENT STATUS]*
+
+- [ ] Implement DB and application testing ; priority*: **0** ; 50%
 - [ ] Implement working logger ; priority*: **0**
 - [ ] General refactoring of core application priority*: **2**
 - [ ] Work on application style -> stylesheets (right now: just plain HTML with a little bit of CSS) ; priority*: **3**
@@ -23,5 +25,5 @@ A local ToDo app. Built with ExpressJS and pug.
 
 
 ---
-* Priorities explained:
+* Priorities:
 *the smaller the number, the more important the task. 0 = urgent!, 3 = will be done soon*

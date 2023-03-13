@@ -1,5 +1,11 @@
-
-/// CONTROLLER OF TODO_ROUTE ///
+/**
+ * The controller of the entire TODO_ ROUTE (currently routes everything of the projects).
+ * Contains all practical things like listing all todos, listing detail view of todo_, creating todo_, updating todo_,
+ * deleting todo_
+ *
+ * @author MfellnerDev
+ * @version 13.03.2023
+ */
 
 const Todo = require('../models/toDo');
 const async = require("async");

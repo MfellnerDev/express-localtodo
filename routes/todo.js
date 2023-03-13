@@ -1,3 +1,10 @@
+/**
+ * Routing configuration for the TODO_ application (routes for everything in this project)
+ *
+ * @author MfellnerDev
+ * @version 13.03.2023
+ */
+
 const express = require("express");
 const router = express.Router();
 
