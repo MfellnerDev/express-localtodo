@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "serverstartWindows": "SET DEBUG=express-locallibrary-tutorial:* & npm run devstart"
+    "serverstartWindows": "SET DEBUG=express-locallibrary-tutorial:* & npm run devstart",
+    "fillDB": "node tests/fakeData.js"
   },
   "dependencies": {
     "async": "^3.2.4",
@@ -23,7 +24,7 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
-    "mongoose-fakery": "^0.1.7",
+    "faker": "^5.5.3",
     "nodemon": "^2.0.21"
   }
 }
