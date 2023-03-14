@@ -2,14 +2,14 @@
  * Routing configuration for the TODO_ application (routes for everything in this project)
  *
  * @author MfellnerDev
- * @version 13.03.2023
+ * @version 14.03.2023
  */
 
 const express = require("express");
 const router = express.Router();
 
 // require controller module
-const todo_controller = require("../controllers/toDoController");
+const todo_controller = require("../controllers/todoController");
 
 /// TODO_ ROUTES ///
 

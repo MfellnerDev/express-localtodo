@@ -1,5 +1,5 @@
 # express-localtodo
-A local ToDo app. Built with ExpressJS and pug.
+A local Todo app. Built with ExpressJS and pug.
 
 **TODOS:**
 
@@ -9,7 +9,7 @@ A local ToDo app. Built with ExpressJS and pug.
 - [ ] Implement working logger ; priority*: **0**
 - [ ] General refactoring of core application priority*: **2**
 - [ ] Work on application style -> stylesheets (right now: just plain HTML with a little bit of CSS) ; priority*: **3**
-- [ ] Implement a password for todos (create a password along with the ToDo-entry -> password is required when trying to update or delete the entry)
+- [ ] Implement a password for todos (create a password along with the Todo-entry -> password is required when trying to update or delete the entry)
 ; priorit*y: **3**
 - [ ] Create a real homepage; a static file that represents the project itself (has nothing to do with functionality) ; priority: **3**
 - [ ] Create a more detailed wiki with installing instructions, etc. 

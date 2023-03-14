@@ -2,7 +2,7 @@
  * The configuration for our ExpressJs application - Requirements, router, middleware, db connection, etc.
  *
  * @author MfellnerDev
- * @version 13.03.2023
+ * @version 14.03.2023
  */
 
 //all modules that are needed for this app

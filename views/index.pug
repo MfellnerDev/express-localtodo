@@ -2,16 +2,16 @@ extends layout
 
 block content
   h1= title
-  p Welcome to your ToDo list. Take a look around with your little navbar.
+  p Welcome to your Todo list. Take a look around with your little navbar.
 
-  h1 ToDo overview
+  h1 Todo overview
 
   if error
-    p Error getting dynamic content
+    p Error getting dynamic content: #{error}
   else
-    p You have the following ToDo's
+    p You have the following Todo's
 
     ul
-      li #[strong ToDos:] !{data.todo_entry_count}
-      li #[strong Open ToDos:] !{data.todo_notDone_entry_count}
-      li #[strong Closed ToDos:] !{data.todo_done_entry_count}
+      li #[strong Todos:] !{data.todo_entries_count}
+      li #[strong Open Todos:] !{data.todo_open_entries_count}
+      li #[strong Closed Todos:] !{data.todo_closed_entries_count}

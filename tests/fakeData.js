@@ -8,7 +8,7 @@
 //TODO: Replace console.log() with a real logger
 
 const faker = require('faker');
-const Todo = require("../models/ToDo");
+const Todo = require("../models/todo");
 const mongoose = require("mongoose");
 
 // MONGODBURL -> env variable that has to include your WHOLE MongoDB connection string
@@ -41,7 +41,7 @@ function generateFakeTodoEntries() {
     if (isNaN(fakeObjectQuantity)) {
         console.log(`Error! Quantity has to be a number! Input: ${fakeObjectQuantity}`);
     } else {
-        console.log(`Trying to fill db with ${fakeObjectQuantity} ToDo entries...`);
+        console.log(`Trying to fill db with ${fakeObjectQuantity} Todo entries...`);
         //promies = JS objects that represent a value that may not be available yet
         //More -> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise?retiredLocale=de
         let promises = [];

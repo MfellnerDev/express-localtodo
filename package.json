@@ -1,6 +1,6 @@
 {
   "name": "express-localtodo",
-  "description": "A local ToDo App - For your productivity",
+  "description": "A local Todo App - For the sake of your productivity",
   "version": "0.0.0",
   "private": true,
   "scripts": {
