@@ -42,11 +42,11 @@ function generateFakeTodoEntries() {
         console.log(`Error! Quantity has to be a number! Input: ${fakeObjectQuantity}`);
     } else {
         console.log(`Trying to fill db with ${fakeObjectQuantity} ToDo entries...`);
-        //promies = JS objects that represent a value that may not be available yet
+        //promise = JS objects that represent a value that may not be available yet
         //More -> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise?retiredLocale=de
         let promises = [];
         for (let i = 0; i < fakeObjectQuantity; i++) {
-            //create a new entry with (completely) fake data
+            //create a new entry with fake data
             let newTodoEntry = new Todo({
                 title: faker.lorem.sentence(),
                 description: faker.lorem.sentence(),
@@ -54,7 +54,7 @@ function generateFakeTodoEntries() {
                 dueDate: faker.date.future(),
                 subject: faker.lorem.word(),
                 isDone: faker.datatype.boolean(),
-            })
+            });
             //push entry into the array and save it
             promises.push(newTodoEntry.save());
         }
