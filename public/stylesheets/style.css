@@ -11,3 +11,26 @@ a {
   padding: 0;
   list-style: none;
 }
+
+/* simple box for every ToDo_ entry*/
+
+div.todo-box {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+div.todo-box a {
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+  display: block;
+  margin-bottom: 10px;
+}
+
+div.todo-box p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}

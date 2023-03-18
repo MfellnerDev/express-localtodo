@@ -3,3 +3,6 @@
 
 # NodeJS modules
 node_modules/
+
+# local env variables
+.env

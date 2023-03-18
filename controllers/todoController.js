@@ -1,7 +1,13 @@
+/**
+ * The controller of the entire TODO_ ROUTE (currently routes everything of the projects).
+ * Contains all practical things like listing all todos, listing detail view of todo_, creating todo_, updating todo_,
+ * deleting todo_
+ *
+ * @author MfellnerDev
+ * @version 18.03.2023
+ */
 
-/// CONTROLLER OF TODO_ROUTE ///
-
-const Todo = require('../models/toDo');
+const Todo = require('../models/todo');
 const async = require("async");
 const {body, validationResult} = require("express-validator");
 const debug = require("debug")("todo");
@@ -16,25 +22,24 @@ exports.index = (req, res) => {
     async.parallel(
         {
             //methods for counting to do objects in db
-            todo_entry_count(callback) {
+            todo_entries_count(callback) {
                 Todo.countDocuments({}, callback);
             },
-            todo_notDone_entry_count(callback) {
+            todo_open_entries_count(callback) {
                 Todo.countDocuments({isDone: false}, callback);
             },
-            todo_done_entry_count(callback) {
+            todo_closed_entries_count(callback) {
                 Todo.countDocuments({isDone: true}, callback);
             },
         },
         (err, results) => {
             //render the result, callback = answer
             res.render("index", {
-                title: "Your ToDo overview",
+                title: "Your Todo overview",
                 error: err,
                 data: results,
-            })
-        }
-    )
+            });
+        });
 };
 
 
@@ -47,10 +52,10 @@ exports.index = (req, res) => {
 exports.todo_list = (req, res, next) => {
     //find {} = get everything, show todos with the latest date first and exec query
     Todo.find({})
-        .sort({dueDate: -1})
+        //sort entries: latest date first
+        .sort({ dueDate: -1 })
         .exec(function (err, todo_list) {
             if (err) {
-                debug(`Error when fetching all todo entries: ${err}`);
                 return next(err);
             }
             //render the result
@@ -80,17 +85,16 @@ exports.todo_detail = (req, res, next) => {
             }
             if (results.todo == null) {
                 //no results -> not found
-                const err = new Error("ToDo entry not found!");
+                const err = new Error(`TODO DETAIL: Cannot find object with id=${req.params.id}`);
                 err.status = 404;
-                    return next(err);
+                next(err);
             }
             //todo_ found
             res.render("todo_detail", {
                 page_title: results.todo.title,
                 todo_object: results.todo,
             })
-        }
-    )
+        });
 };
 
 /**
@@ -143,7 +147,7 @@ exports.todo_create_post = [
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/errors messages
             res.render("todo_form", {
-                title: "Create a new ToDo",
+                title: "Create a new Todo",
                 author: req.body,
                 errors: errors.array(),
             });
@@ -164,8 +168,6 @@ exports.todo_create_post = [
         //save the new object into the db
         todo.save((err) => {
             if (err) {
-                debug(`Error when fetching todo detail of id=${req.params.id}: ${err}`);
-
                 return next(err);
             }
             // Successful - redirect to new todo_
@@ -178,7 +180,7 @@ exports.todo_create_post = [
  * Displays todo_delete form on GET
  * @param req request
  * @param res response
- * @param next next (middleware)
+ * @param next next (for middleware)
  */
 exports.todo_delete_get = (req, res, next) => {
     async.parallel(
@@ -190,9 +192,7 @@ exports.todo_delete_get = (req, res, next) => {
         },
         (err, results) => {
             if (err) {
-                debug(`Error when trying to GET delete, object with id=${req.params.id} doesn't exist: ${err}`);
-                res.redirect('http://localhost:3000/html/404.html');
-                return;
+                next(err);
             }
             if (results.todo == null) {
                 //no results -> redirect to entries
@@ -201,11 +201,10 @@ exports.todo_delete_get = (req, res, next) => {
 
             //successful, render form
             res.render("todo_form_delete", {
-                title: "Delete ToDo",
+                title: "Delete Todo",
                 todo: results.todo
-            })
-        }
-    )
+            });
+        });
 };
 
 /**
@@ -222,24 +221,20 @@ exports.todo_delete_post = (req, res, next) => {
                 Todo.findById(req.params.id).exec(callback);
             },
         },
-         (err, results) => {
+        (err, results) => {
             if (err) {
-                debug(`Error when trying to delete todo with id=${req.params.id}: ${err}`);
                 return next(err);
             }
 
             //find and delete object with id
             Todo.findByIdAndDelete(req.body.id, (err) => {
                 if (err) {
-                    debug(`Delete error, cannot find object with id=${req.params.id}: ${err}`);
-                    res.redirect('http://localhost:3000/html/404.html');
-                    return;
+                    next(err);
                 }
                 //success - go to all entries
                 res.redirect("/todo/entries");
             });
-        }
-    );
+        });
 };
 
 /**
@@ -258,25 +253,23 @@ exports.todo_update_get = (req, res, next) => {
         },
         (err, results) => {
             if (err) {
-                debug(`Update GET error, object wit hid=${req.params.id} doesn't exist: ${err}`);
-                res.redirect('http://localhost:3000/html/404.html');
-                return;
+                //redirect that error to the error handler middleware
+                return next(err);
             }
             if (results.todo == null) {
                 //no results -> 404
-                const err = new Error("ToDo not found!");
+                const err = new Error("Todo not found!");
                 err.status = 404;
                 return next(err);
             }
 
             //Success, render update form
             res.render("todo_form", {
-                title: "Update ToDo",
+                title: "Update Todo",
                 todo: results.todo,
-            })
-        }
-    )
- }
+            });
+        });
+}
 
 /**
  * Handle todo_update operation on POST
@@ -312,7 +305,7 @@ exports.todo_update_post = [
 
     // Now, process request after validation and sanitization.
 
-     (req, res, next) => {
+    (req, res, next) => {
         // Extract validation errors from a request
         const errors = validationResult(req);
 
@@ -331,7 +324,7 @@ exports.todo_update_post = [
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/errors messages
             res.render("todo_form", {
-                title: "Update a ToDo",
+                title: "Update a Todo",
                 author: req.body,
                 errors: errors.array(),
             });
@@ -341,9 +334,11 @@ exports.todo_update_post = [
         // data from form is valid, update the object in db
         Todo.findByIdAndUpdate(req.params.id, todo, {}, (err, todo) => {
             if (err) {
-                debug(`Update POST error, cannot find object with id=${req.params.id}: ${err}`);
-                res.redirect('http://localhost:3000/html/404.html');
-                return;
+                if (err.status === 404) {
+                    const err = new Error(`POST UPDATE: Cannot find object with id=${req.params.id}`);
+                    err.status = 404;
+                }
+                return next(err);
             }
 
             // Successful! Redirect to new updated todo_ page
@@ -351,4 +346,3 @@ exports.todo_update_post = [
         });
     },
 ];
-

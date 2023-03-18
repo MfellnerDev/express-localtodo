@@ -1,6 +1,14 @@
 #!/usr/bin/env node
 
 /**
+ * The actual web server configuration for this project. Also contains error handlers.
+ *
+ * @author [express-generator]
+ * @version 13.03.2023
+ */
+
+
+/**
  * Module dependencies.
  */
 
