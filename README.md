@@ -5,7 +5,6 @@ A local Todo app. Built with ExpressJS and pug.
 
 *Structure: [TODO] ; [PRIORITY] ; [CURRENT STATUS]*
 
-- [ ] Implement DB and application testing ; priority*: **0** ; 50%
 - [ ] Implement working logger ; priority*: **0**
 - [ ] General refactoring of core application priority*: **2**
 - [ ] Work on application style -> stylesheets (right now: just plain HTML with a little bit of CSS) ; priority*: **3**
@@ -17,6 +16,9 @@ A local Todo app. Built with ExpressJS and pug.
 - [ ] (when first version finished) Create docker-compose file for app
 ; priorit:* **3**
 - [ ] Enable picture attachments ; priority*: **optional**
+
+
+- [x] Implement DB and application testing ; priority*: **0** ; 100% (test cases have to be small tho)
 
 
 ### Even though it is clear, this project is still not finished and probably contains a few bugs and security issues. They will be fixed soon.
