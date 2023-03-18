@@ -14,7 +14,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const compression = require("compression");
 const helmet = require("helmet");
-//get module to work with .env files
+//load env variables
 require('dotenv').config();
 
 const indexRouter = require('./routes/index');
@@ -25,7 +25,7 @@ const todoRouter = require('./routes/todo');
 mongoose.set('strictQuery', false);
 
 //get infos out of environment vars (-> github secrets)
-const mongoDB = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PWD}@${process.env.MONGODB_HOSTNAME}:27017/?authSource=admin`
+const mongoDB = `${process.env.MONGODB_CONNECTION_STRING}`
     || 'mongodb://127.0.0.1:27017';
 //wait for db to connect, logging error if occurs
 main().catch(err => console.log(err));

@@ -14,7 +14,7 @@ require('dotenv').config();
 const mongoose = require("mongoose");
 
 // MONGODBURL -> env variable that YOU must define
-const mongoDB = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PWD}@${process.env.MONGODB_HOSTNAME}:27017/?authSource=admin`
+const mongoDB = `${process.env.MONGODB_CONNECTION_STRING}`
 || 'mongodb://127.0.0.1:27017';
 
 //disable queries for properties that are not in the schema
@@ -26,7 +26,6 @@ const fakeObjectQuantity = 100;
 async function connectToDB() {
     await mongoose.connect(mongoDB);
 }
-
 function generateFakeData() {
     //connect to db
     connectToDB().catch(err => console.log(err));
@@ -36,7 +35,8 @@ function generateFakeData() {
     generateFakeTodoEntries();
 
     console.log("Fake data creation was successful! Enjoy your new entries. :)");
-    console.log(`MongoDB connection string: ${mongoDB}`);
+
+
 }
 
 function generateFakeTodoEntries() {
@@ -57,7 +57,7 @@ function generateFakeTodoEntries() {
                 dueDate: faker.date.future(),
                 subject: faker.lorem.word(),
                 isDone: faker.datatype.boolean(),
-            })
+            });
             //push entry into the array and save it
             promises.push(newTodoEntry.save());
         }
