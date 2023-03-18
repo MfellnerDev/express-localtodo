@@ -2,7 +2,7 @@
  * The configuration for our ExpressJs application - Requirements, router, middleware, db connection, etc.
  *
  * @author MfellnerDev
- * @version 14.03.2023
+ * @version 18.03.2023
  */
 
 //all modules that are needed for this app
@@ -14,6 +14,8 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const compression = require("compression");
 const helmet = require("helmet");
+//get module to work with .env files
+require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 //import custom todoRouter
@@ -22,9 +24,9 @@ const todoRouter = require('./routes/todo');
 //disable queries with properties that are not in the schema
 mongoose.set('strictQuery', false);
 
-//define database url, currently a local running db
-const mongoDB = 'mongodb://0.0.0.0:27017/todoApp';
-
+//get infos out of environment vars (-> github secrets)
+const mongoDB = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PWD}@${process.env.MONGODB_HOSTNAME}:27017/?authSource=admin`
+    || 'mongodb://127.0.0.1:27017';
 //wait for db to connect, logging error if occurs
 main().catch(err => console.log(err));
 
@@ -57,12 +59,12 @@ app.use('/', indexRouter);
 app.use('/todo', todoRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -71,5 +73,4 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-
 module.exports = app;

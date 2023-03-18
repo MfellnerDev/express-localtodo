@@ -4,7 +4,7 @@
  * deleting todo_
  *
  * @author MfellnerDev
- * @version 14.03.2023
+ * @version 18.03.2023
  */
 
 const Todo = require('../models/todo');
@@ -56,7 +56,6 @@ exports.todo_list = (req, res, next) => {
         .sort({ dueDate: -1 })
         .exec(function (err, todo_list) {
             if (err) {
-                debug(`Error when fetching all todo entries: ${err}`);
                 return next(err);
             }
             //render the result
@@ -86,9 +85,9 @@ exports.todo_detail = (req, res, next) => {
             }
             if (results.todo == null) {
                 //no results -> not found
-                debug(`Error when trying to GET delete, object with id=${req.params.id} doesn't exist: ${err}`);
-                res.redirect('http://localhost:3000/html/404.html');
-                return;
+                const err = new Error(`TODO DETAIL: Cannot find object with id=${req.params.id}`);
+                err.status = 404;
+                next(err);
             }
             //todo_ found
             res.render("todo_detail", {
@@ -169,8 +168,6 @@ exports.todo_create_post = [
         //save the new object into the db
         todo.save((err) => {
             if (err) {
-                debug(`Error when fetching todo detail of id=${req.params.id}: ${err}`);
-
                 return next(err);
             }
             // Successful - redirect to new todo_
@@ -183,8 +180,9 @@ exports.todo_create_post = [
  * Displays todo_delete form on GET
  * @param req request
  * @param res response
+ * @param next next (for middleware)
  */
-exports.todo_delete_get = (req, res) => {
+exports.todo_delete_get = (req, res, next) => {
     async.parallel(
         {
             //find todo_ by id
@@ -194,9 +192,7 @@ exports.todo_delete_get = (req, res) => {
         },
         (err, results) => {
             if (err) {
-                debug(`Error when trying to GET delete, object with id=${req.params.id} doesn't exist: ${err}`);
-                res.redirect('http://localhost:3000/html/404.html');
-                return;
+                next(err);
             }
             if (results.todo == null) {
                 //no results -> redirect to entries
@@ -227,16 +223,13 @@ exports.todo_delete_post = (req, res, next) => {
         },
         (err, results) => {
             if (err) {
-                debug(`Error when trying to delete todo with id=${req.params.id}: ${err}`);
                 return next(err);
             }
 
             //find and delete object with id
             Todo.findByIdAndDelete(req.body.id, (err) => {
                 if (err) {
-                    debug(`Delete error, cannot find object with id=${req.params.id}: ${err}`);
-                    res.redirect('http://localhost:3000/html/404.html');
-                    return;
+                    next(err);
                 }
                 //success - go to all entries
                 res.redirect("/todo/entries");
@@ -260,9 +253,8 @@ exports.todo_update_get = (req, res, next) => {
         },
         (err, results) => {
             if (err) {
-                debug(`Update GET error, object wit hid=${req.params.id} doesn't exist: ${err}`);
-                res.redirect('http://localhost:3000/html/404.html');
-                return;
+                //redirect that error to the error handler middleware
+                return next(err);
             }
             if (results.todo == null) {
                 //no results -> 404
@@ -313,7 +305,7 @@ exports.todo_update_post = [
 
     // Now, process request after validation and sanitization.
 
-    (req, res) => {
+    (req, res, next) => {
         // Extract validation errors from a request
         const errors = validationResult(req);
 
@@ -342,9 +334,11 @@ exports.todo_update_post = [
         // data from form is valid, update the object in db
         Todo.findByIdAndUpdate(req.params.id, todo, {}, (err, todo) => {
             if (err) {
-                debug(`Update POST error, cannot find object with id=${req.params.id}: ${err}`);
-                res.redirect('http://localhost:3000/html/404.html');
-                return;
+                if (err.status === 404) {
+                    const err = new Error(`POST UPDATE: Cannot find object with id=${req.params.id}`);
+                    err.status = 404;
+                }
+                return next(err);
             }
 
             // Successful! Redirect to new updated todo_ page
@@ -352,4 +346,3 @@ exports.todo_update_post = [
         });
     },
 ];
-

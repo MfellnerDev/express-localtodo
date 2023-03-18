@@ -2,18 +2,20 @@
  * Generates fake data for the mongoDB database - Currently only one schema = Todo_
  *
  * @author MfellnerDev
- * @version 13.03.2023
+ * @version 18.03.2023
  */
 
 //TODO: Replace console.log() with a real logger
 
 const faker = require('faker');
 const Todo = require("../models/todo");
+//get module to work with .env files
+require('dotenv').config();
 const mongoose = require("mongoose");
 
-// MONGODBURL -> env variable that has to include your WHOLE MongoDB connection string
-//or the URL will be set to your local mongoDB server
-const mongoDBConnectionURL = process.env.MONGODBURL || 'mongodb://0.0.0.0:27017/todoApp';
+// MONGODBURL -> env variable that YOU must define
+const mongoDB = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PWD}@${process.env.MONGODB_HOSTNAME}:27017/?authSource=admin`
+|| 'mongodb://127.0.0.1:27017';
 
 //disable queries for properties that are not in the schema
 mongoose.set('strictQuery', false);
@@ -22,7 +24,7 @@ mongoose.set('strictQuery', false);
 const fakeObjectQuantity = 100;
 
 async function connectToDB() {
-    await mongoose.connect(mongoDBConnectionURL);
+    await mongoose.connect(mongoDB);
 }
 
 function generateFakeData() {
@@ -34,10 +36,11 @@ function generateFakeData() {
     generateFakeTodoEntries();
 
     console.log("Fake data creation was successful! Enjoy your new entries. :)");
+    console.log(`MongoDB connection string: ${mongoDB}`);
 }
 
 function generateFakeTodoEntries() {
-    // check if quantity is NaN (Not a Number
+    // check if quantity is NaN (Not a Number)
     if (isNaN(fakeObjectQuantity)) {
         console.log(`Error! Quantity has to be a number! Input: ${fakeObjectQuantity}`);
     } else {

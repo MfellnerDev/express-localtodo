@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "serverstartWindows": "SET DEBUG=express-locallibrary-tutorial:* & npm run devstart",
+    "serverstartWindows": "SET DEBUG=express-localtodo:* & npm run devstart",
+    "serverStartLinux": "export DEBUG=express-localtodo:* && npm run devstart",
     "fillDB": "node tests/fakeData.js"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-validator": "^6.15.0",
     "helmet": "^6.0.1",
