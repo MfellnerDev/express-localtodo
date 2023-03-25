@@ -10,7 +10,6 @@
 const Todo = require('../models/todo');
 const async = require("async");
 const {body, validationResult} = require("express-validator");
-const debug = require("debug")("todo");
 
 
 /**
@@ -33,6 +32,12 @@ exports.index = (req, res) => {
             },
         },
         (err, results) => {
+
+            if (err)    {
+                //inform about error but do not redirect to error handler, error will be rendered on website
+                console.error(`Error! There was a problem while trying to count all todo entries!`);
+            }
+
             //render the result, callback = answer
             res.render("index", {
                 title: "Your Todo overview",
@@ -56,6 +61,7 @@ exports.todo_list = (req, res, next) => {
         .sort({ dueDate: -1 })
         .exec(function (err, todo_list) {
             if (err) {
+                console.error(`Error! There was a problem while trying to fetch all todo entries.`);
                 return next(err);
             }
             //render the result
@@ -80,14 +86,14 @@ exports.todo_detail = (req, res, next) => {
         },
         (err, results) => {
             if (err) {
-                debug(`Error when fetching todo detail of id=${req.params.id}: ${err}`);
+                console.error(`Error when fetching todo detail of id=${req.params.id}: ${err}`);
                 return next(err);
             }
             if (results.todo == null) {
                 //no results -> not found
-                const err = new Error(`TODO DETAIL: Cannot find object with id=${req.params.id}`);
-                err.status = 404;
-                next(err);
+
+                console.error(`Error! Cannot find object with id=${req.params.id}`);
+                return next(err);
             }
             //todo_ found
             res.render("todo_detail", {
@@ -168,6 +174,7 @@ exports.todo_create_post = [
         //save the new object into the db
         todo.save((err) => {
             if (err) {
+                console.error(`TODO CREATE POST: Error while trying to save new object!`);
                 return next(err);
             }
             // Successful - redirect to new todo_
@@ -192,9 +199,11 @@ exports.todo_delete_get = (req, res, next) => {
         },
         (err, results) => {
             if (err) {
-                next(err);
+                console.error(`Error! There was a problem while trying to find todo entry with id=${req.params.id}`);
+                return next(err);
             }
             if (results.todo == null) {
+                console.warn(`Warning! Could not find todo entry with id=${req.params.id}`);
                 //no results -> redirect to entries
                 res.redirect('/todo/entries');
             }
@@ -221,15 +230,17 @@ exports.todo_delete_post = (req, res, next) => {
                 Todo.findById(req.params.id).exec(callback);
             },
         },
-        (err, results) => {
+        (err) => {
             if (err) {
+                console.error(`Error! There was a problem with sending the data via POST!`);
                 return next(err);
             }
 
             //find and delete object with id
             Todo.findByIdAndDelete(req.body.id, (err) => {
                 if (err) {
-                    next(err);
+                    console.error(`Error! There was a problem while trying to find and delete todo entry with id=${req.body.id}`);
+                    return next(err);
                 }
                 //success - go to all entries
                 res.redirect("/todo/entries");
@@ -253,13 +264,13 @@ exports.todo_update_get = (req, res, next) => {
         },
         (err, results) => {
             if (err) {
-                //redirect that error to the error handler middleware
+                console.error(`Error! There was a problem while trying to find todo entry with id=${req.params.id}`);
                 return next(err);
             }
             if (results.todo == null) {
                 //no results -> 404
-                const err = new Error("Todo not found!");
-                err.status = 404;
+                console.warn(`Error! Todo entry with id=${req.params.id} does not exist.`)
+                const err = new Error().status = 404;
                 return next(err);
             }
 
@@ -323,6 +334,7 @@ exports.todo_update_post = [
         });
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/errors messages
+            console.warn(`Warning! Form data could not be sent! Re-rendering the form...`);
             res.render("todo_form", {
                 title: "Update a Todo",
                 author: req.body,
@@ -335,8 +347,9 @@ exports.todo_update_post = [
         Todo.findByIdAndUpdate(req.params.id, todo, {}, (err, todo) => {
             if (err) {
                 if (err.status === 404) {
-                    const err = new Error(`POST UPDATE: Cannot find object with id=${req.params.id}`);
-                    err.status = 404;
+                    console.error(`Error! Cannot find object with id=${req.params.id}`);
+                } else {
+                    console.error(`Error! There was a problem while trying to find and update todo entry with id=${req.params.id}`);
                 }
                 return next(err);
             }
