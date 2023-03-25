@@ -5,8 +5,6 @@
  * @version 18.03.2023
  */
 
-//TODO: Replace console.log() with a real logger
-
 const faker = require('faker');
 const Todo = require("../models/todo");
 //get module to work with .env files
