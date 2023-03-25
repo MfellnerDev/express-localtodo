@@ -20,7 +20,7 @@ beforeEach(async () => {
     await mongoose.connect(mongodb);
 });
 
-function createNewTodoEntry(title, description, priority, dueDate, subject, isDone)   {
+function createNewTodoEntry(title, description, priority, dueDate, subject, isDone) {
     let id = new mongoose.Types.ObjectId();
     let newTodoEntry = new Todo({
         _id: id,
@@ -48,7 +48,7 @@ describe('GET /todo/entries', () => {
 // TEST CASE: CREATE TODO_ & GET DETAILED VIEW
 describe('GET /todo/entries/:id', () => {
     it("should return detail of todo", async () => {
-        let objId = await createNewTodoEntry( "Test221", "Test2", 0, "2005-05-13", "hello", false);
+        let objId = await createNewTodoEntry("Test221", "Test2", 0, "2005-05-13", "hello", false);
         const res = await request(app).get(`/todo/entries/${objId}`);
         expect(res.statusCode).toBe(200);
     });
@@ -56,16 +56,16 @@ describe('GET /todo/entries/:id', () => {
 
 // TEST CREATE TODO_ ENTRY
 describe('POST /todo/entries/create', () => {
-   it('Should create a todo entry', async () => {
-       const res = await request(app).post('/todo/entries/create').send({
-           title: "Title1",
-           description: "description1",
-           priority: 0,
-           dueDate: "2005-05-13",
-           subject: "AM",
-           "isDone": false,
-       });
-       //if redirected -> created successfully
-       expect(res.statusCode).toBe(302);
-   });
+    it('Should create a todo entry', async () => {
+        const res = await request(app).post('/todo/entries/create').send({
+            title: "Title1",
+            description: "description1",
+            priority: 0,
+            dueDate: "2005-05-13",
+            subject: "AM",
+            "isDone": false,
+        });
+        //if redirected -> created successfully
+        expect(res.statusCode).toBe(302);
+    });
 });
