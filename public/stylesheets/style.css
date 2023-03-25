@@ -1,11 +1,13 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+
 }
 
 a {
   color: #00B7FF;
 }
+
 .sidebar-nav {
   margin-top: 20px;
   padding: 0;
@@ -15,17 +17,18 @@ a {
 /* simple box for every ToDo_ entry*/
 
 div.todo-box {
-  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
 }
 
 div.todo-box a {
   font-size: 20px;
   font-weight: bold;
   text-decoration: none;
-  color: #333;
+  color: orange;
   display: block;
   margin-bottom: 10px;
 }
@@ -33,4 +36,110 @@ div.todo-box a {
 div.todo-box p {
   font-size: 16px;
   margin-bottom: 5px;
+}
+
+html, body {
+  background-color: #212121;
+  color: #f5f5f5;
+}
+
+.container-fluid {
+  margin-top: 20px;
+}
+
+/* Style the sidebar */
+.sidebar-nav {
+  padding: 0;
+}
+
+.sidebar-nav li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.sidebar-nav li a {
+  display: block;
+  padding: 10px;
+  background-color: #252525;
+  color: #f0f0f0;
+  text-decoration: none;
+}
+
+.sidebar-nav li a:hover {
+  background-color: #333333;
+}
+
+/* Style the content area */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffa500;
+}
+
+p {
+  line-height: 1.5;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
+
+/* Style elements for all used input types -> make the forms cleaner*/
+
+input[type="text"], select, input[type="text"]::placeholder {
+  border: 2px solid orange;
+  background-color: #252525;
+  color: white;
+}
+
+input[type="text"]:focus {
+  border: 2px solid deepskyblue;
+  background-color: #252525;
+  color: white;
+
+}
+
+input[type="date"], select {
+  border: 2px solid orange;
+  background-color: #252525;
+  color: white;
+}
+
+input[type="date"]:focus {
+  border: 2px solid deepskyblue;
+  background-color: #252525;
+  color: white;
+}
+
+input[type="number"], select, input[type="number"]::placeholder {
+  border: 2px solid orange;
+  background-color: #252525;
+  color: white;
+}
+
+input[type="number"]:focus {
+  border: 2px solid deepskyblue;
+  background-color: #252525;
+  color: white;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  border: 2px solid orange;
+  width: 20px;
+  height: 20px;
+  background-color: #252525;
+  outline: none;
+}
+
+input[type="checkbox"]:checked {
+  background-color: blue;
+}
+
+/* table elements, index page*/
+th, td {
+  color: white;
 }
