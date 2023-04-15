@@ -15,7 +15,14 @@ If you want to build and run this project locally, please follow these instructi
 You want to know which commands this project provides? Then you can look at the following file:
 - [Commands](docs/commands.md)
 
-**TODOS:**
+## 3. How to contribute
+
+If you would like to contribute or leave feedback on this project, please feel free to do so.
+You can open an issue and/or a pull request at any time.
+
+But please be patient with me, as I am very busy.
+
+## 3. TODOS
 
 *Structure: [TODO] ; [PRIORITY] ; [CURRENT STATUS]**
 
