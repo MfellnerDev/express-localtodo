@@ -156,7 +156,7 @@ $ docker ps
 
 ### 6. What to do if source code or files are changed
 
-If you pull from origin or just change files by yourself, you will need to rebuild the container.
+If you pull changes from origin or just change files by yourself, you will need to rebuild the container.
 
 To do that, just follow the following steps:
 ```shell
