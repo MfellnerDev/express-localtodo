@@ -1,7 +1,7 @@
 {
   "name": "express-localtodo",
   "description": "A local Todo App - Plan your Todos effectively.",
-  "version": "1.0",
+  "version": "1.0.0",
   "private": false,
   "scripts": {
     "start": "node ./bin/www",
