@@ -2,17 +2,8 @@ extends layout
 
 block content
     h1= title
-    p Welcome to your local Todo list.
-
-    h2 About
-    p This is an application that aims to help you organize your tasks and get things done. It was created by MfellnerDev with the purpose of practicing web development skills.
-
-    h2 Technology
-    p The project was built using NodeJS. The front-end is built with Pug, CSS and JavaScript. The back-end is built with ExpressJS and MongoDB (Mongoose).
-
-    h2 Status
-    p This app is currently in development and will soon be finished. It will not be continued after the final version. However, feel free to contribute as I will still be watching the project.
-
+    p Welcome to your Todo list.
+    
     h2 Todo Overview
 
     if error
@@ -31,5 +22,5 @@ block content
                     td Open Todos
                     td !{data.todo_open_entries_count}
                 tr
-                    td Closed Todos
+                    td Finished Todos
                     td !{data.todo_closed_entries_count}
