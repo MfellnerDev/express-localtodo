@@ -1,5 +1,9 @@
 # Commands/Scripts of this application
 
+`commands.md | Version: 15.04.2023 | Author: MfellnerDev`
+
+For the setup instructions, see [Getting started](commands.md).
+
 While developing, I've created a few useful scripts that I would like to share with everyone.
 
 If you are not familiar with the NodeJS project structure, the commands for executing these
