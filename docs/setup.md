@@ -97,7 +97,7 @@ The structure is the following:
 *Preperation:*
 *Before build the container, you have to create a `.env` file in the project root with the following content:
 
-`MONGODB_CONNECTION_STRING="mongodb://mongo:27017"`
+`MONGODB_CONNECTION_STRING="mongodb://mongodb:27017"`
 
 *Only if you do this, the NodeJS application will be able to connect to the database.*
 
@@ -108,7 +108,7 @@ As you can see in the `1. Requirements` section, you will need to install the Do
 
 ### 2. Build the Docker container
 
-The Dockerfile is provided and can be found in `docker/`.
+The Dockerfile is provided and found in the root directory (`Dockerfile`).
 
 Now, we are going to build the container with `docker build`:
 
@@ -133,10 +133,10 @@ The container has to be in the created network.
 Start the container with `docker run`:
 
 ```shell
-$ docker run -d --name mongodb --network localtodo-network
+$ docker run -d --name mongodb --network localtodo-network mongo
 ```
 
-### 3. Last but not least, start the NodeJS container
+### 5. Last but not least, start the NodeJS container
 
 The container needs to be in the created network and, of course, needs it's `3000` port exposed.
 
@@ -144,7 +144,36 @@ The container needs to be in the created network and, of course, needs it's `300
 $ docker run -d --name express-localtodo --network localtodo-network -p 3000:3000 express-localtodo
 ```
 
-**6. Optional:** Execute commands from [commands.md](commands.md)
+Now, you should check if the containers are running:
+
+```shell
+$ docker ps
+# You should a similiar output than the following:
+# CONTAINER ID   IMAGE               COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+# fb1e041819ef   express-localtodo   "docker-entrypoint.s…"   3 seconds ago    Up 1 second     0.0.0.0:3000->3000/tcp, :::3000->3000/tcp   express-localtodo
+# 7bdc7b65b77b   mongo               "docker-entrypoint.s…"   13 seconds ago   Up 11 seconds   27017/tcp                                   mongod
+```
+
+### 6. What to do if source code or files are changed
+
+If you pull from origin or just change files by yourself, you will need to rebuild the container.
+
+To do that, just follow the following steps:
+```shell
+# 1. Stop and remove the current express-localtodo container
+$ docker stop express-localtodo && docker rm express-localtodo
+
+# 2. Rebuild the container
+$ docker build -t express-localtodo .
+
+# 3. Run the newly built container
+$ docker run -d --name express-localtodo --network localtodo-network -p 3000:3000 express-localtodo
+```
+
+This should be all it takes. Keep in mind that you only have to do that with the express-localtodo container. Don't touch the mongodb container.
+
+
+### 7. *Optional:* Execute commands from [commands.md](commands.md)
 
 If you would like to execute commands listed in the [commands.md](commands.md) file, you can do this with the following Docker command:
 
