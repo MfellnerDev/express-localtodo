@@ -1,22 +1,29 @@
-# express-localtodo
+# Express-localtodo
 A local Todo app. Built with ExpressJS and pug.
+    
+
+## 1. Setup
+
+If you want to build and run this project locally, please follow these instructions:
+
+- [Setup](docs/setup.md) 
+
+*Please note that the setup instructions are currently only provided for Linux-based operating systems.*
+
+## 2. Commands
+
+You want to know which commands this project provides? Then you can look at the following file:
+- [Commands](docs/commands.md)
 
 **TODOS:**
 
-*Structure: [TODO] ; [PRIORITY] ; [CURRENT STATUS]*
-
-- [ ] Create a more detailed wiki with installing instructions, etc. 
-; priority:* **3**
-
-- [x] Implement DB and application testing ; priority*: **0** ; 100% (test cases have to be small tho)
-- [x] Work on application style -> stylesheets (right now: just plain HTML with a little bit of CSS) ; priority*: **3**
+*Structure: [TODO] ; [PRIORITY] ; [CURRENT STATUS]**
 
 
-### Even though it is clear, this project is still not finished and probably contains a few bugs and security issues. They will be fixed soon.
-
-### And please keep in mind that I am a ExpressJS newbie. This is my first project.
+### Please keep in mind that I am a ExpressJS newbie. This is my first project.
 
 
 ---
-* Priorities:
+
+*Priorities:
 *the smaller the number, the more important the task. 0 = urgent!, 3 = will be done soon*
