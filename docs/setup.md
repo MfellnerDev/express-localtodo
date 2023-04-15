@@ -82,7 +82,7 @@ $ npm run start
 
 Congratulations! You've successfully installed and run the application.
 
-## 3. Docker installation
+## 3. Install via Docker
 
 An easier (and platform-independent) way to install this application is via `Docker`.
 
