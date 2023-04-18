@@ -63,7 +63,7 @@ $ npm install dev
 Next, you need to create a `.env` file in the root directory of the project and paste your `MongoDB connection string`
 into it.
 
-You can find the "syntax" for this in `.env_example`. 
+You can find the "syntax" for this in [.env_example](../.env_example). 
 
 For example, your `.env` file could look like this:
 ```shell
