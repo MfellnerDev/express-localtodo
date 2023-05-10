@@ -2,7 +2,7 @@
 A local Todo app. Built with ExpressJS and pug.
 
 ### Attention!
-Because I've been leading another project that is developed in ExpressJS, I gathered a lot of experience and found lots of room for new features and optimization. I know that this current code is really messy and unstructured (it was my first project in ExpressJS). I will extend and rewrite this application as soon as I have the time! (Don't expect it to happen too soon; I am extremely busy)
+Because I've been leading another project that is developed via ExpressJS, I've gathered a lot of experience and found lots of room for new features and optimization. I know that this current code is really messy and unstructured (-> it was my first project in ExpressJS). I will extend and rewrite this application as soon as I have the time! (Don't expect it to happen too soon; I am very busy)
 
 ## 1. Setup
 
